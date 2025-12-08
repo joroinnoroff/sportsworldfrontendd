@@ -34,7 +34,7 @@ const getAthleteById = async (id: number) : Promise<IAthleteSingelResponse> => {
             success: false,
             data: null
         }
-    } 
+    }
 }
 
 // GET BY NAME
@@ -85,10 +85,7 @@ const postAthlete = async (athlete: IAthlete, image: File) => {
 
         return {
             success: true,
-            data: {
-                athlete: response.data,
-                image: response2.data
-            } 
+            data: response.data && response2.data
         }
 
     } catch(error){

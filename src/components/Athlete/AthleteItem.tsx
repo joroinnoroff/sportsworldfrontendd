@@ -13,7 +13,7 @@ const AthleteItem = ({athlete}:{athlete: IAthlete}) => {
             <h3>{athlete.gender}</h3>
             <h3>{athlete.price}</h3>
             <img 
-                src={athlete.image} 
+                src={`http://localhost:5279/images/athlete/${athlete.image}`} 
                 alt={athlete.name} 
             />
             <h3>{athlete.purchaseStatus}</h3>
