@@ -6,15 +6,15 @@ const endpoint = "http://localhost:5279/api/athlete";
 const endpointImageUpload = "http://localhost:5279/api/athleteimageupload";
 
 // GET ALL ATHLETES
-const getAllAthletes = async () : Promise<IAthleteResponse> =>{
-     try{
+const getAllAthletes = async (): Promise<IAthleteResponse> => {
+    try {
         const response = await axios.get(endpoint);
-        return{
+        return {
             success: true,
             data: response.data
         }
-    }catch{
-        return{
+    } catch {
+        return {
             success: false,
             data: null
         }
@@ -22,15 +22,15 @@ const getAllAthletes = async () : Promise<IAthleteResponse> =>{
 }
 
 // GET ON ID
-const getAthleteById = async (id: number) : Promise<IAthleteSingelResponse> => {
-    try{
+const getAthleteById = async (id: number): Promise<IAthleteSingelResponse> => {
+    try {
         const response = await axios.get(`${endpoint}/getbyid/${id}`);
-        return{
+        return {
             success: true,
             data: response.data
         }
-    }catch(error){
-        return{
+    } catch (error) {
+        return {
             success: false,
             data: null
         }
@@ -53,17 +53,28 @@ const getAthleteByName = async (name: string): Promise<IAthleteResponse> => {
     }
 }
 
-// PUT
-const editAthlete = async (editedAthlete: IAthlete) : Promise<IAthleteSingelResponse> => {
-    try{
+// PUT FABIAN HAR EGEN
+const putAthlete = async (editedAthlete: IAthlete, newImage: File) => {
+    try {
         const response = await axios.put(endpoint, editedAthlete);
-        return{
+
+        if (newImage) {
+            const formData = new FormData();
+            formData.append("file", newImage);
+
+            await axios.post(endpointImageUpload, formData, {
+                headers: { "Content-Type": "multipart/form-data" }
+            });
+        } else {
+            console.log("No new image provided, skipping image upload.");
+        }
+
+        return {
             success: true,
             data: response.data
-            
         }
-    }catch(error){
-        return{
+    } catch (error) {
+        return {
             success: false,
             data: null
         }
@@ -71,7 +82,7 @@ const editAthlete = async (editedAthlete: IAthlete) : Promise<IAthleteSingelResp
 }
 
 // POST OBJEKT MED BILDE
-   const postAthlete = async (athlete: IAthlete, image: File) => {
+const postAthlete = async (athlete: IAthlete, image: File) => {
     try {
         const response = await axios.post(endpoint, athlete);
 
@@ -86,7 +97,7 @@ const editAthlete = async (editedAthlete: IAthlete) : Promise<IAthleteSingelResp
             success: true,
             data: response.data
         };
-
+        formData.delete("file");
     } catch (error) {
         console.error("POST error:", error);
         return {
@@ -96,11 +107,25 @@ const editAthlete = async (editedAthlete: IAthlete) : Promise<IAthleteSingelResp
     }
 }
 
+const deleteAthlete = async (id: number) => {
+    try {
+        await axios.delete(`${endpoint}/${id}`);
+        return {
+            success: true
+        }
+    } catch (error) {
+        console.error("DELETE error:");
+        return {
+            success: false
+        }
+    }
+}
+
 export default {
     getAllAthletes,
     getAthleteById,
     getAthleteByName,
-    editAthlete,
-    postAthlete
+    putAthlete,
+    postAthlete,
+    deleteAthlete
 }
-   

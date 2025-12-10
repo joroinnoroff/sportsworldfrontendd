@@ -6,11 +6,11 @@ import { AthleteContext } from "../../contexts/AthleteContext";
 
 const AthleteList = () => {
 
-    const {athletes} = useContext(AthleteContext) as IAthleteContext;
+    const { athletes } = useContext(AthleteContext) as IAthleteContext;
 
     const getAthleteJSX = () => {
-        const athleteJSX = athletes.map( (athlete, index) => {
-            return(
+        const athleteJSX = athletes.map((athlete, index) => {
+            return (
                 <AthleteItem
                     key={"athlete" + index}
                     athlete={athlete}
@@ -20,7 +20,7 @@ const AthleteList = () => {
         return athleteJSX;
     }
 
-    return(
+    return (
         <section className="col-span-6">
             <header>
                 Athletes liste

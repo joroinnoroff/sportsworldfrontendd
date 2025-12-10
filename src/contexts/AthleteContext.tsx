@@ -2,13 +2,13 @@ import { useState, createContext, type ReactNode, useEffect } from "react";
 import { type IAthlete } from "../interfaces/IAthlete";
 import type { IAthleteContext } from "../interfaces/IAthleteContext";
 import AthleteService from "../services/AthleteService";
-import type { IDefaultResponse } from "../interfaces/ResponseInterfaces";
+import type { IAthleteSingelResponse, IDefaultResponse } from "../interfaces/ResponseInterfaces";
 
 export const AthleteContext = createContext<IAthleteContext | null>(null);
 
-interface Props {children: ReactNode}
+interface Props { children: ReactNode }
 
-export const AthleteProvider = ({children} : Props) => {
+export const AthleteProvider = ({ children }: Props) => {
 
     const [athletes, setAthletes] = useState<IAthlete[]>([]);
     const [idAthlete, setIdAthlete] = useState<IAthlete | null>(null);
@@ -17,75 +17,86 @@ export const AthleteProvider = ({children} : Props) => {
 
     const setAthletesFromService = async () => {
         const response = await AthleteService.getAllAthletes();
-        if(response.success && response.data){
+        if (response.success && response.data) {
             setAthletes(response.data);
-        }else{
+        } else {
             console.log(Error)
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         setAthletesFromService();
     }, [])
 
     // Athlete quantity
-    const fetchAthleteQuantity = () : number => {
+    const fetchAthleteQuantity = (): number => {
         return athletes.length;
     }
 
     // Søk athlete på id
-    const fetchAthleteById = async (id: number) => {
+    const fetchAthleteById = async (id: number): Promise<IAthleteSingelResponse> => {
         const response = await AthleteService.getAthleteById(id);
-        if(response.success && response.data){
+        if (response.success && response.data) {
             setIdAthlete(response.data);
-        }else{
+            return {
+                success: true,
+                data: response.data
+            }
+        } else {
             console.log(Error)
+            return {
+                success: false,
+                data: null
+            }
         }
     }
 
     // Søk athlete på name 
     const fetchAthleteByName = async (name: string) => {
         const response = await AthleteService.getAthleteByName(name);
-        if(response.success && response.data){
+        if (response.success && response.data) {
             setNameAthletes(response.data);
-        }else{
+        } else {
             console.log(Error)
         }
     }
 
     // TODO: Put/edit athlete
-
-    const editAthlete = async (updatedAthlete: IAthlete) : Promise<IDefaultResponse> => {
-        const response = await AthleteService.editAthlete(updatedAthlete);
-        if(response.success && response.data){
+    const putAthlete = async (editedAthlete: IAthlete, image: File): Promise<IDefaultResponse> => {
+        const response = await AthleteService.putAthlete(editedAthlete, image);
+        if (response.success && response.data) {
             setAthletes(
-                prev => [updatedAthlete, ...prev]
+                prev => [...prev, editedAthlete]
             );
         }
         return response;
     }
 
     // POST
-
-    const saveAthlete = async (newAthlete: IAthlete, image: File) : Promise<IDefaultResponse> => {
+    const saveAthlete = async (newAthlete: IAthlete, image: File): Promise<IDefaultResponse> => {
         const response = await AthleteService.postAthlete(newAthlete, image);
-        if(response.success === true && response.data != null){
-            const newAthleteWithId : IAthlete = response.data;
+        if (response.success === true && response.data != null) {
+            const newAthleteWithId: IAthlete = response.data;
             setAthletes(
-                prev => [newAthleteWithId, ...prev]
+                prev => [...prev, newAthleteWithId]
             );
         }
         return response;
     }
 
-     // Legg til fighter med bilde
-  
-    // DELETE
-
-    return(
+    return (
         // Sjekk IAthleteContex
         // Husk å wrap Provider i AppRouting til pages som skal ha tilgang
-        <AthleteContext.Provider value={{athletes, fetchAthleteQuantity, fetchAthleteById, idAthlete, fetchAthleteByName, nameAthletes, saveAthlete}}>
+        <AthleteContext.Provider value={{
+            athletes,
+            fetchAthleteQuantity,
+            fetchAthleteById,
+            idAthlete,
+            fetchAthleteByName,
+            nameAthletes,
+            saveAthlete,
+            putAthlete
+        }}>
             {children}
         </AthleteContext.Provider>
     );

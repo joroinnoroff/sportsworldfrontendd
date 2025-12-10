@@ -1,5 +1,5 @@
 const AddVenuePage = () => {
-    return(
+    return (
         <>
             <h1>Add venue page</h1>
         </>

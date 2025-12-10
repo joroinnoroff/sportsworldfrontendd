@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const PageNavigation = () => {
-    return(
+    return (
         <nav className="bg-gray-500 text-white pt-2 pb-2">
             <ul className="flex justify-around">
                 <li><Link className="hover:text-gray-300" to="/">Athletes</Link></li>

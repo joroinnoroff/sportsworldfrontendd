@@ -1,6 +1,6 @@
 const VenuePage = () => {
-    return(
-        <>  
+    return (
+        <>
             <h1>Show all venues page</h1>
         </>
     );

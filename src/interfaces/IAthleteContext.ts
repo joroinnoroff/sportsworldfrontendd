@@ -4,9 +4,10 @@ import type { IDefaultResponse, IAthleteSingelResponse } from "./ResponseInterfa
 export interface IAthleteContext {
     athletes: IAthlete[],
     fetchAthleteQuantity: () => number,
-    fetchAthleteById: (id: number) => void,
+    fetchAthleteById: (id: number) => Promise<IAthleteSingelResponse>,
     idAthlete: IAthlete | null,
     fetchAthleteByName: (name: string) => void,
     nameAthletes: IAthlete[],
-    saveAthlete: (athlete: IAthlete, image: File) => Promise<IDefaultResponse>
+    saveAthlete: (athlete: IAthlete, image: File) => Promise<IDefaultResponse>,
+    putAthlete: (updatedAthlete: IAthlete, image: File) => Promise<IDefaultResponse>,
 }

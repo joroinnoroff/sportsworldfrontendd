@@ -1,13 +1,14 @@
 import AthleteEdit from "../components/Athlete/AthleteEdit";
 import AthleteList from "../components/Athlete/AthleteList";
-import AthleteQuantity from "../components/Athlete/AthleteQuantity";
 import AthleteSearch from "../components/Athlete/AthleteSearch";
 
 const AthletePage = () => {
-    return(
+    return (
         <>
-        <h1>athletes page</h1>
+            <h1>athletes page</h1>
             <div className="grid grid-cols-12 gap-4">
+                <AthleteSearch/>
+                <AthleteList/>
                 <AthleteEdit/>
             </div>
         </>
