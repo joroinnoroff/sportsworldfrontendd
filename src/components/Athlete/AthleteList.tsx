@@ -3,29 +3,26 @@ import type { IAthlete } from "../../interfaces/IAthlete";
 import AthleteItem from "./AthleteItem";
 import type { IAthleteContext } from "../../interfaces/IAthleteContext";
 import { AthleteContext } from "../../contexts/AthleteContext";
+//Mulighet for å sende item fra side med context- eksempel dashbord
+interface AthleteListProps {
+    athletes?: IAthlete[]; // optional
+}
 
-const AthleteList = () => {
+const AthleteList = ({ athletes: propAthletes }: AthleteListProps) => {
 
-    const { athletes } = useContext(AthleteContext) as IAthleteContext;
+    const { athletes: contextAthletes } = useContext(AthleteContext) as IAthleteContext;
 
-    const getAthleteJSX = () => {
-        const athleteJSX = athletes.map((athlete, index) => {
-            return (
-                <AthleteItem
-                    key={"athlete" + index}
-                    athlete={athlete}
-                />
-            )
-        });
-        return athleteJSX;
-    }
+    // If propAthletes exists → use it
+    // Else → use all athletes from context
+    const finalAthletes = propAthletes ?? contextAthletes;
 
     return (
-        <section className="col-span-6">
-            <header>
-                Athletes liste
-            </header>
-            {getAthleteJSX()}
+        <section className="min-w-full   min-h-full grid grid-cols-2   xl:grid-cols-3 2xl:grid-cols-4">
+
+
+            {finalAthletes.map((athlete, index) => (
+                <AthleteItem key={"athlete" + index} athlete={athlete} />
+            ))}
         </section>
     );
 }

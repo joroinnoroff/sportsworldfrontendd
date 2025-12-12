@@ -1,4 +1,5 @@
 import type { IAthlete } from "./IAthlete";
+import type { IFinance } from "./IFinance";
 import type { IVenue } from "./IVenue";
 
 export interface IDefaultResponse {
@@ -13,6 +14,12 @@ export interface IAthleteSingelResponse {
 export interface IAthleteResponse {
     success: boolean,
     data: IAthlete[] | null
+}
+
+//Finance Respons
+export interface IFinanceResponse {
+    success: boolean,
+    data: IFinance | null
 }
 
 // VENUE RESPONSES

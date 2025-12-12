@@ -5,11 +5,13 @@ import AthleteSearch from "../components/Athlete/AthleteSearch";
 const AthletePage = () => {
     return (
         <>
-            <h1>athletes page</h1>
-            <div className="grid grid-cols-12 gap-4">
-                <AthleteSearch/>
-                <AthleteList/>
-                <AthleteEdit/>
+            <div className="px-6 py-12">
+                <h1>athletes page</h1>
+                <div className="">
+                    <AthleteSearch />
+                    <AthleteList />
+                    <AthleteEdit />
+                </div>
             </div>
         </>
     );

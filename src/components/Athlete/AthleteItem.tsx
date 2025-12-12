@@ -1,64 +1,98 @@
 import { useContext } from "react";
-import { type IAthlete } from "../../interfaces/IAthlete";
-import AthleteService from "../../services/AthleteService";
+import type { IAthlete } from "../../interfaces/IAthlete";
 import type { IAthleteContext } from "../../interfaces/IAthleteContext";
 import { AthleteContext } from "../../contexts/AthleteContext";
+import { FinanceContext } from "../../contexts/FinanceContext";
 
 const AthleteItem = ({ athlete }: { athlete: IAthlete }) => {
-const { deleteAthelete, putPurchasedTrue } = useContext(AthleteContext) as IAthleteContext;
+    const { deleteAthelete, putPurchasedTrue } =
+        useContext(AthleteContext) as IAthleteContext;
 
-const handleDelete = async () => {
-    if (athlete.id != null) {
+    const financeContext = useContext(FinanceContext);
+    if (!financeContext) return null;
 
-     
-        await deleteAthelete(athlete.id);
-    }
-}
+    const { finance, updateFinance } = financeContext;
 
+    const handleDelete = async () => {
+        if (athlete.id != null) await deleteAthelete(athlete.id);
+    };
 
-const handlePurchase = async () => {
-    if (athlete.id != null) {
-        const purchasedAthlete: IAthlete = {
-            ...athlete,
-            purchaseStatus: true
+    const handlePurchase = async () => {
+        if (!finance || athlete.id == null) return;
+
+        if (athlete.price > finance.moneyLeft) {
+            alert("You don't have enough money!");
+            return;
+        }
+
+        const newFinance = {
+            ...finance,
+            moneyLeft: finance.moneyLeft - athlete.price,
+            numberOfPurchases: finance.numberOfPurchases + 1,
+            moneySpent: finance.moneySpent + athlete.price,
         };
-        await putPurchasedTrue( purchasedAthlete);
-    }
-}
 
+        await updateFinance(newFinance);
+
+        const updatedAthlete: IAthlete = {
+            ...athlete,
+            purchaseStatus: true,
+        };
+
+        await putPurchasedTrue(updatedAthlete);
+    };
 
     return (
-        <article className="bg-white rounded-lg shadow p-4 max-w-sm col-span-3 md:col-span-6">
-            <div className="space-y-1">
-                <h3 className="text-sm text-gray-500">Id: {athlete.id}</h3>
-                <h2 className="text-lg font-semibold">{athlete.name}</h2>
-                <p className="text-sm text-gray-600">Gender: {athlete.gender}</p>
-                <p className="text-sm text-gray-600">Price: {athlete.price} kr</p>
+        <div className="p-4 max-w-sm ">
+            {/* HEADER */}
+            <div className="flex items-center justify-between mb-2">
+                <h2 className="text-lg font-medium">{athlete.name}</h2>
+
+                {athlete.purchaseStatus && (
+                    <span className="text-xs font-semibold">
+                        Purchased
+                    </span>
+                )}
             </div>
 
+            {/* DETAILS */}
+            <div className="text-sm mb-3">
+                <p>ID: {athlete.id}</p>
+                <p>Gender: {athlete.gender}</p>
+                <p>Price: {athlete.price} kr</p>
+            </div>
+
+            {/* IMAGE — SAME SIZE FOR ALL */}
             <img
-                className="mt-3 w-full h-48 object-cover rounded-md"
+                className="w-full h-[400px] lg:h-[500px] object-cover"
                 src={`http://localhost:5279/images/athlete/${athlete.image}`}
                 alt={athlete.name}
             />
 
-            <div className="mt-3 text-sm text-gray-600">
-                Purchased: {athlete.purchaseStatus ? "Yes" : "No"}
+            {/* ACTIONS */}
+            <div className="mt-4 flex flex-col gap-2">
+
+                <button
+                    disabled={athlete.purchaseStatus}
+                    onClick={handlePurchase}
+                    className={`w-full py-2 border transition
+                        ${athlete.purchaseStatus
+                            ? "opacity-50 cursor-not-allowed"
+                            : "hover:opacity-70"
+                        }`}
+                >
+                    {athlete.purchaseStatus ? "Already Purchased" : "Purchase Athlete"}
+                </button>
+
+                <button
+                    className="w-full py-2 border hover:opacity-70 transition"
+                    onClick={handleDelete}
+                >
+                    Delete
+                </button>
             </div>
-
-            <button onClick={handlePurchase}>
-                Purchase Athlete
-            </button>
-
-            <button
-                className="mt-4 w-full py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 transition"
-                onClick={handleDelete}
-            >
-                Delete
-            </button>
-        </article>
+        </div>
     );
-
-}
+};
 
 export default AthleteItem;

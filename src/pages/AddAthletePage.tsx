@@ -4,7 +4,7 @@ import NewAthlete from "../components/Athlete/AthleteNew";
 const AddAthletePage = () => {
     return (
         <>
-            <div className="grid grid-cols-12 gap-4">
+            <div className="px-6 py-12">
                 <h1>Add athlete page</h1>
                 <NewAthlete />
                 <AthleteList />
