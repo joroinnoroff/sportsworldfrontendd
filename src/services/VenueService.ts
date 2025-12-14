@@ -2,8 +2,7 @@ import axios from "axios";
 import type { IVenue } from "../interfaces/IVenue";
 import type { 
     IVenueResponse, 
-    IVenueSingelResponse, 
-    IDefaultResponse 
+    IVenueSingelResponse 
 } from "../interfaces/ResponseInterfaces";
 
 const endpoint = "http://localhost:5279/api/venue";
@@ -16,14 +15,14 @@ const getAllVenues = async (): Promise<IVenueResponse> => {
         return {
             success: true,
             data: response.data
-        };
+        }
     } catch {
         return {
             success: false,
             data: null
-        };
+        }
     }
-};
+}
 
 // GET BY ID
 const getVenueById = async (id: number): Promise<IVenueSingelResponse> => {
@@ -39,12 +38,12 @@ const getVenueById = async (id: number): Promise<IVenueSingelResponse> => {
             data: null
         };
     }
-};
+}
 
-// GET BY NAME
-const getVenueByName = async (name: string): Promise<IVenueResponse> => {
+// GET BY CAPACITY
+const getVenueByCapacity = async (capacity: number): Promise<IVenueResponse> => {
     try {
-        const response = await axios.get(`${endpoint}/GetByName/${name}`);
+        const response = await axios.get(`${endpoint}/GetByCapacity/${capacity}`);
         return {
             success: true,
             data: response.data
@@ -53,9 +52,9 @@ const getVenueByName = async (name: string): Promise<IVenueResponse> => {
         return {
             success: false,
             data: null
-        };
+        }
     }
-};
+}
 
 // PUT VENUE (med bilde)
 const putVenue = async (editedVenue: IVenue, newImage: File) => {
@@ -74,14 +73,14 @@ const putVenue = async (editedVenue: IVenue, newImage: File) => {
         return {
             success: true,
             data: response.data
-        };
+        }
     } catch {
         return {
             success: false,
             data: null
-        };
+        }
     }
-};
+}
 
 // POST VENUE med bilde
 const postVenue = async (venue: IVenue, image: File) => {
@@ -98,15 +97,15 @@ const postVenue = async (venue: IVenue, image: File) => {
         return {
             success: true,
             data: response.data
-        };
+        }
     } catch (error) {
         console.error("POST error:", error);
         return {
             success: false,
             data: null
-        };
+        }
     }
-};
+}
 
 // DELETE VENUE
 const deleteVenue = async (id: number) => {
@@ -114,19 +113,19 @@ const deleteVenue = async (id: number) => {
         await axios.delete(`${endpoint}/${id}`);
         return {
             success: true
-        };
+        }
     } catch {
         console.error("DELETE error:");
         return {
             success: false
-        };
+        }
     }
-};
+}
 
 export default {
     getAllVenues,
     getVenueById,
-    getVenueByName,
+    getVenueByCapacity,
     putVenue,
     postVenue,
     deleteVenue

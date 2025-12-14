@@ -6,8 +6,7 @@ import { AthleteContext } from "../../contexts/AthleteContext";
 
 const AthleteEdit = () => {
 
-    const { putAthlete, fetchAthleteById, idAthlete } =
-        useContext(AthleteContext) as IAthleteContext;
+    const { putAthlete, fetchAthleteById, idAthlete } = useContext(AthleteContext) as IAthleteContext;
 
 
     const idInput = useRef<HTMLInputElement | null>(null);

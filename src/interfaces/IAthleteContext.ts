@@ -11,6 +11,5 @@ export interface IAthleteContext {
     saveAthlete: (athlete: IAthlete, image: File) => Promise<IDefaultResponse>,
     putAthlete: (updatedAthlete: IAthlete, image: File ) => Promise<IDefaultResponse>,
     deleteAthelete: (id: number ) => Promise<IDefaultResponse>,
-     
     putPurchasedTrue: (purchasedAthlete: IAthlete) => Promise<IDefaultResponse>
 }

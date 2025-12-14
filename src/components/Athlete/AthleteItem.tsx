@@ -5,8 +5,7 @@ import { AthleteContext } from "../../contexts/AthleteContext";
 import { FinanceContext } from "../../contexts/FinanceContext";
 
 const AthleteItem = ({ athlete }: { athlete: IAthlete }) => {
-    const { deleteAthelete, putPurchasedTrue } =
-        useContext(AthleteContext) as IAthleteContext;
+const { deleteAthelete, putPurchasedTrue } = useContext(AthleteContext) as IAthleteContext;
 
     const financeContext = useContext(FinanceContext);
     if (!financeContext) return null;

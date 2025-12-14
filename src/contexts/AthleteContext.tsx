@@ -51,8 +51,6 @@ export const AthleteProvider = ({ children }: Props) => {
         }
     }
 
- 
-
     // Søk athlete på name 
     const fetchAthleteByName = async (name: string) => {
         const response = await AthleteService.getAthleteByName(name);

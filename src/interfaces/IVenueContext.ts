@@ -6,8 +6,9 @@ export interface IVenueContext {
     fetchVenueQuantity: () => number,
     fetchVenueById: (id: number) => Promise<IVenueSingelResponse>,
     idVenue: IVenue | null,
-    fetchVenueByName: (name: string) => void,
-    nameVenues: IVenue[],
+    fetchVenueByCapacity: (capacity: number) => void,
+    capacityVenues: IVenue[],
     saveVenue: (venue: IVenue, image: File) => Promise<IDefaultResponse>,
     putVenue: (updatedVenue: IVenue, image: File) => Promise<IDefaultResponse>,
+    deleteVenue: (id: number) => Promise<IDefaultResponse>,
 }

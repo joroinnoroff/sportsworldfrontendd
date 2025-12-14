@@ -12,7 +12,7 @@ export const VenueProvider = ({ children }: Props) => {
 
     const [venues, setVenues] = useState<IVenue[]>([]);
     const [idVenue, setIdVenue] = useState<IVenue | null>(null);
-    const [nameVenues, setNameVenues] = useState<IVenue[]>([]);
+    const [capacityVenues, setCapacityVenues] = useState<IVenue[]>([]);
 
     const setVenuesFromService = async () => {
         const response = await VenueService.getAllVenues();
@@ -50,25 +50,45 @@ export const VenueProvider = ({ children }: Props) => {
         }
     };
 
-    // Søk venue på name 
-    const fetchVenueByName = async (name: string) => {
-        const response = await VenueService.getVenueByName(name);
+    // Søk venue på capacity
+    const fetchVenueByCapacity = async (capacity: number) => {
+        const response = await VenueService.getVenueByCapacity(capacity);
         if (response.success && response.data) {
-            setNameVenues(response.data);
+            setCapacityVenues(response.data);
         } else {
             console.log(Error);
         }
-    };
+    }
 
     // PUT / Edit venue
     const putVenue = async (editedVenue: IVenue, image: File): Promise<IDefaultResponse> => {
-        const response = await VenueService.putVenue(editedVenue, image);
-        if (response.success && response.data) {
-            const updatedVenue: IVenue = response.data;
-            setVenues(prev => [...prev, updatedVenue]);
+        try {
+            const response = await VenueService.putVenue(editedVenue, image);
+    
+            if (response.success && response.data) {
+                setVenues(prev =>
+                    prev.map(v =>
+                        v.id === editedVenue.id ? response.data : v
+                    )
+                );
+            }
+    
+            return response;
+    
+        } catch (error) {
+            return { success: false };
         }
-        return response;
     };
+
+    // DELETE
+    // delete venue
+    const deleteVenue = async (id: number): Promise<IDefaultResponse> => {
+    const response = await VenueService.deleteVenue(id);
+    if (response.success) {
+        setVenues(prev => prev.filter(v => v.id !== id));
+    }
+    return response;
+    }
 
     // POST
     const saveVenue = async (newVenue: IVenue, image: File): Promise<IDefaultResponse> => {
@@ -78,7 +98,7 @@ export const VenueProvider = ({ children }: Props) => {
             setVenues(prev => [...prev, newVenueWithId]);
         }
         return response;
-    };
+    }
 
     return (
         <VenueContext.Provider value={{
@@ -86,12 +106,13 @@ export const VenueProvider = ({ children }: Props) => {
             fetchVenueQuantity,
             fetchVenueById,
             idVenue,
-            fetchVenueByName,
-            nameVenues,
+            fetchVenueByCapacity,
+            capacityVenues,
             saveVenue,
-            putVenue
+            putVenue,
+            deleteVenue
         }}>
             {children}
         </VenueContext.Provider>
     );
-};
+}

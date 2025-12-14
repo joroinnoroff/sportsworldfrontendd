@@ -1,13 +1,18 @@
+import { useContext } from "react";
+import { VenueContext } from "../../contexts/VenueContext";
 import { type IVenue } from "../../interfaces/IVenue";
-import VenueService from "../../services/VenueService";
+import type { IVenueContext } from "../../interfaces/IVenueContext";
 
 const VenueItem = ({ venue }: { venue: IVenue }) => {
+
+    const { deleteVenue } = useContext(VenueContext) as IVenueContext;
 
     const handleDelete = async () => {
         console.log("Deleting venue with id:", venue.id);
         const idInput = Number(venue.id);
-        await VenueService.deleteVenue(idInput);
-    };
+        await deleteVenue(idInput)
+        // await VenueService.deleteVenue(idInput);
+    }
 
     return (
         <article className="bg-white rounded-lg shadow p-4 max-w-sm col-span-3 md:col-span-6">
@@ -31,6 +36,6 @@ const VenueItem = ({ venue }: { venue: IVenue }) => {
             </button>
         </article>
     );
-};
+}
 
 export default VenueItem;
