@@ -14,6 +14,8 @@ const VenueItem = ({ venue }: { venue: IVenue }) => {
         // await VenueService.deleteVenue(idInput);
     }
 
+    console.log(venue.image)
+
     return (
         <article className="bg-white rounded-lg shadow p-4 max-w-sm col-span-3 md:col-span-6">
             <div className="space-y-1">

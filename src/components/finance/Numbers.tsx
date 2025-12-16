@@ -32,7 +32,7 @@ const Numbers = () => {
 
   return (
     <div>
-      <h2>Overview:</h2>
+
       {finance ? (
         <table className="table-auto border-collapse border border-gray-300">
           <thead>

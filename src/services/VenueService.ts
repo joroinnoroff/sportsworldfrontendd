@@ -1,8 +1,8 @@
 import axios from "axios";
 import type { IVenue } from "../interfaces/IVenue";
-import type { 
-    IVenueResponse, 
-    IVenueSingelResponse 
+import type {
+    IVenueResponse,
+    IVenueSingelResponse
 } from "../interfaces/ResponseInterfaces";
 
 const endpoint = "http://localhost:5279/api/venue";
@@ -97,7 +97,8 @@ const postVenue = async (venue: IVenue, image: File) => {
         return {
             success: true,
             data: response.data
-        }
+        };
+        formData.delete("file");
     } catch (error) {
         console.error("POST error:", error);
         return {

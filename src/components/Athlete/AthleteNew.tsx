@@ -54,6 +54,7 @@ const NewAthlete = () => {
             <div className="flex flex-col gap-1">
                 <label className="text-sm text-gray-600">Name</label>
                 <input
+                    placeholder="Name"
                     ref={nameInput}
                     type="text"
                     className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -63,6 +64,7 @@ const NewAthlete = () => {
             <div className="flex flex-col gap-1">
                 <label className="text-sm text-gray-600">Gender</label>
                 <input
+                    placeholder="Male / Female / Unkown"
                     ref={genderInput}
                     type="text"
                     className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -72,6 +74,7 @@ const NewAthlete = () => {
             <div className="flex flex-col gap-1">
                 <label className="text-sm text-gray-600">Price</label>
                 <input
+                    placeholder="1kr and up"
                     ref={priceInput}
                     type="number"
                     className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

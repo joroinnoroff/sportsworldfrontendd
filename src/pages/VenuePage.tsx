@@ -5,10 +5,12 @@ import VenueSearch from "../components/Venue/VenueSearch";
 const VenuePage = () => {
     return (
         <>
-            <h1>Show all venues page</h1>
-            <VenueList />
-            <VenueSearch/>
-            <VenueEdit/>
+            <div className="px-6  my-12">
+                <h1 className="text-5xl font-bold my-4">Search for venues</h1>
+                <VenueList />
+                <VenueSearch />
+                <VenueEdit />
+            </div>
         </>
     );
 }

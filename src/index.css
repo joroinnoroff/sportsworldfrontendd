@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+
+/*
+standard med border 0.5px
+*/
+button {
+  border: 0.5px solid #c8c8c8;
+
+}

@@ -1,42 +1,53 @@
-import { useRef, useContext } from "react";
+import React, { useRef, useContext, useState } from "react";
 import { AthleteContext } from "../../contexts/AthleteContext";
 import { type IAthleteContext } from "../../interfaces/IAthleteContext";
 import AthleteItem from "./AthleteItem";
 
+
+
 const AthleteSearch = () => {
 
     const nameInput = useRef<HTMLInputElement | null>(null);
-    const { fetchAthleteByName, nameAthletes } = useContext(AthleteContext) as IAthleteContext;
+    //importere athletes fra context
+    const { athletes } = useContext(AthleteContext) as IAthleteContext;
+    const [searched, setSearched] = useState<string>("");
 
-    const handleSearch = async () => {
-        if (nameInput.current && nameInput.current.value != "") {
-            await fetchAthleteByName(nameInput.current.value)
-            console.log("sender" + nameInput.current.value)
-        } else {
-            console.log(Error, "Error handeling search on name")
+
+    //bruker athletes fra context og setter dem
+    const handleSearch = () => {
+        if (nameInput.current?.value) {
+            setSearched(nameInput.current.value);
         }
-    }
+    };
 
-    const getAthleteJSX = () => {
-        const athleteJSX = nameAthletes.map((athlete, index) => {
-            return (
-                <AthleteItem
-                    key={"athlete" + index}
-                    athlete={athlete}
-                />
-            )
-        });
-        return athleteJSX;
+
+
+
+
+    //Trenger ikke være async bare for ui
+    const handleClear = () => {
+        setSearched("")
+        //nullstiller søkefelt 
+        if (nameInput.current) nameInput.current.value = "";
     }
+    //bruker det som alt er i contekst og søker etter dem
+    const displayedAthletes = searched
+        ? athletes.filter(a =>
+            a.name.toLowerCase().includes(searched.toLowerCase())
+        )
+        : [];
+
+
+
+
 
     return (
-        <section className="bg-white rounded-lg shadow p-6 max-w-md space-y-5 col-span-12 md:col-span-6">
-            <h2 className="text-xl font-semibold text-gray-800">
-                Search Athlete
-            </h2>
+        <section className="  p-3 ">
 
-            <div className="flex flex-col gap-1">
-                <label className="text-sm text-gray-600">
+
+            <div className="flex flex-col gap-1 max-w-md">
+
+                <label className="text-sm text-gray-600 sr-only">
                     Search athlete by name
                 </label>
                 <input
@@ -45,18 +56,28 @@ const AthleteSearch = () => {
                     className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter name..."
                 />
+                <button
+                    onClick={handleSearch}
+                    className="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition font-medium"
+                >
+                    Search
+                </button>
             </div>
 
-            <button
-                onClick={handleSearch}
-                className="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition font-medium"
-            >
-                Search
-            </button>
+            {/**Vises kun om man søker */}
+            {searched && (
+                <div className="mt-4 space-y-3">
+                    <p>You have searched for: {searched} </p>
 
-            <div className="mt-4 space-y-3">
-                {getAthleteJSX()}
-            </div>
+                    <button onClick={handleClear} className="px-4 py-2 flex gap-1 cursor-pointer rounded-md"><span className="text-xs rounded-full bg-black text-white h-4 w-4">X</span>Clear</button>
+                    <p className="text-xs font-thin opacity-60 my-2">{displayedAthletes.length} {displayedAthletes.length > 1 ? "results" : "result"}</p>
+                    <div className="grid grid-cols-2   xl:grid-cols-3 2xl:grid-cols-4">
+                        {displayedAthletes.map((athlete, index) => (
+                            <AthleteItem key={"athlete" + index} athlete={athlete} />
+                        ))}
+                    </div>
+                </div>
+            )}
         </section>
     );
 

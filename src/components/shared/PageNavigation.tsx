@@ -1,16 +1,66 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+const navLinks = [
+    { name: "home", to: "" },
+    { name: "create", to: "add-new-athlete" },
+    { name: "dashboard", to: "dashboard" },
+    { name: "venues", to: "get-all-venues" },
+    { name: "Create venue", to: "add-new-venues" },
+]
 
 const PageNavigation = () => {
+    const [open, setOpen] = useState(false);
+
+    //setter sann / false ved click 
+    const handleToggle = () => {
+        setOpen(prev => !prev);
+
+    }
+
+    //bruker react dom location til å finne aktiv side
+    const location = useLocation();
+    const activePath = location.pathname;
     return (
-        <nav className="bg-gray-500 text-white pt-2 pb-2">
-            <ul className="flex justify-around">
-                <li><Link className="hover:text-gray-300" to="/">Athletes</Link></li>
-                <li><Link className="hover:text-gray-300" to="add-new-athlete">New Athlete</Link></li>
-                <li><Link className="hover:text-gray-300" to="dashboard">Dashboard</Link></li>
-                <li><Link className="hover:text-gray-300" to="get-all-venues">Venues</Link></li>
-                <li><Link className="hover:text-gray-300" to="add-new-venues">New Venue</Link></li>
-            </ul>
-        </nav>
+        <header className=" p-6 flex items-start gap-6">
+            <nav className=" ">
+
+
+                <ul className="hidden lg:flex gap-6 justify-around  rounded-md items-center">
+                    {/**bruker location fra react router og sjekker activepath mot link to */}
+                    {navLinks.map((link, idx) => (
+                        <Link key={idx} to={link.to}
+                            className={`${activePath === `/${link.to}` ? "text-white bg-black border rounded-md" : " hover:opacity-70"}
+                            py-2 px-4 transition`}>{link.name}</Link>
+                    ))}
+
+                </ul>
+
+
+                {/**Mobil navi */}
+
+                {/**Viser meny valg om state er sann */}
+                <button onClick={handleToggle}
+                    className="hover:bg-gray-300 cursor-pointer transition px-4 py-2 block lg:hidden">
+                    {open ? "X" : "Menu"}</button>
+                {open ? (
+                    <>
+                        <ul className="flex gap-6 justify-around bg-black text-white h-20 p-4 rounded-md items-center">
+
+                            {navLinks.map((link, idx) => (
+                                <Link key={idx} to={link.to} onClick={handleToggle}>{link.name}</Link>
+                            ))}
+
+                        </ul>
+
+
+
+                    </>
+                ) : (
+                    null
+                )}
+            </nav>
+        </header>
     );
 }
 

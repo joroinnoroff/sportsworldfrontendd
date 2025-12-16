@@ -16,7 +16,7 @@ const DashboardPage = () => {
 
     return (
         <>
-            <div className="  mx-auto py-6 px-12 min-h-screen w-full">
+            <div className="px-6  my-12">
                 <h1 className="text-5xl font-bold my-4">Dashboard page</h1>
 
                 <div className="grid  ">
@@ -32,7 +32,7 @@ const DashboardPage = () => {
 
                     <div className="athlests my-8">
                         <div className="container">
-                            <h3>Fighters purchased: </h3>
+                            <h3 className="text-3xl">Fighters purchased: </h3>
 
                             {purchasedAthletes.length > 0 ? (
                                 <AthleteList athletes={purchasedAthletes} />

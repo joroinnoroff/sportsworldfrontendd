@@ -66,7 +66,7 @@ const VenueEdit = () => {
     }
 
     return (
-        <section>
+        <section className="my-52">
             <h3>Edit Venue</h3>
 
             <div>

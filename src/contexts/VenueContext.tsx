@@ -64,7 +64,7 @@ export const VenueProvider = ({ children }: Props) => {
     const putVenue = async (editedVenue: IVenue, image: File): Promise<IDefaultResponse> => {
         try {
             const response = await VenueService.putVenue(editedVenue, image);
-    
+
             if (response.success && response.data) {
                 setVenues(prev =>
                     prev.map(v =>
@@ -72,9 +72,9 @@ export const VenueProvider = ({ children }: Props) => {
                     )
                 );
             }
-    
+
             return response;
-    
+
         } catch (error) {
             return { success: false };
         }
@@ -83,19 +83,21 @@ export const VenueProvider = ({ children }: Props) => {
     // DELETE
     // delete venue
     const deleteVenue = async (id: number): Promise<IDefaultResponse> => {
-    const response = await VenueService.deleteVenue(id);
-    if (response.success) {
-        setVenues(prev => prev.filter(v => v.id !== id));
-    }
-    return response;
+        const response = await VenueService.deleteVenue(id);
+        if (response.success) {
+            setVenues(prev => prev.filter(v => v.id !== id));
+        }
+        return response;
     }
 
     // POST
     const saveVenue = async (newVenue: IVenue, image: File): Promise<IDefaultResponse> => {
         const response = await VenueService.postVenue(newVenue, image);
         if (response.success === true && response.data != null) {
-            const newVenueWithId: IVenue = response.data;
-            setVenues(prev => [...prev, newVenueWithId]);
+            const newAthleteWithId: IVenue = response.data;
+            setVenues(
+                prev => [...prev, newAthleteWithId]
+            );
         }
         return response;
     }

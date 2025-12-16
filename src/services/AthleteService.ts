@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { IAthlete } from "../interfaces/IAthlete";
-import type { IAthleteResponse, IAthleteSingelResponse, IDefaultResponse } from "../interfaces/ResponseInterfaces";
+import type { IAthleteResponse, IAthleteSingelResponse } from "../interfaces/ResponseInterfaces";
 
 const endpoint = "http://localhost:5279/api/athlete";
 const endpointImageUpload = "http://localhost:5279/api/athleteimageupload";
@@ -54,7 +54,7 @@ const getAthleteByName = async (name: string): Promise<IAthleteResponse> => {
 }
 
 // PUT ATHLETE (med bilde)
-const putAthlete = async (editedAthlete: IAthlete, newImage: File  | null ) => {
+const putAthlete = async (editedAthlete: IAthlete, newImage: File | null) => {
     try {
         const response = await axios.put(endpoint, editedAthlete);
 
@@ -68,7 +68,7 @@ const putAthlete = async (editedAthlete: IAthlete, newImage: File  | null ) => {
         } else {
             console.log("No new image provided, skipping image upload.");
         }
-       
+
 
         return {
             success: true,
@@ -90,9 +90,8 @@ const postAthlete = async (athlete: IAthlete, image: File) => {
         const formData = new FormData();
         formData.append("file", image);
 
-        await axios.post(endpointImageUpload, formData, {
-            headers: { "Content-Type": "multipart/form-data" }
-        });
+        await axios.post(endpointImageUpload, formData);
+
 
         return {
             success: true,
@@ -112,28 +111,28 @@ const deleteAthlete = async (id: number) => {
     try {
         await axios.delete(`${endpoint}/${id}`);
 
-            console.log( "DELETE successful for athlete with id:", id );
-          
+        console.log("DELETE successful for athlete with id:", id);
+
         return {
-            success: true 
+            success: true
         }
-      
-        
+
+
     } catch (error) {
         console.error("DELETE error:");
         return {
             success: false
         }
-    }  
+    }
 }
 
 // purchase athelete set boolean true for purchase
-const purchaseAthlete = async (athelete: IAthlete ): Promise<IAthleteSingelResponse> => {
+const purchaseAthlete = async (athelete: IAthlete): Promise<IAthleteSingelResponse> => {
     try {
-       const updatedAthlete: IAthlete = {...athelete, purchaseStatus: true };
+        const updatedAthlete: IAthlete = { ...athelete, purchaseStatus: true };
 
-       //sende full resp til db
-       const response = await axios.put(endpoint, updatedAthlete)
+        //sende full resp til db
+        const response = await axios.put(endpoint, updatedAthlete)
         return {
             success: true,
             data: response?.data

@@ -17,12 +17,14 @@ const AthleteList = ({ athletes: propAthletes }: AthleteListProps) => {
     const finalAthletes = propAthletes ?? contextAthletes;
 
     return (
-        <section className="min-w-full   min-h-full grid grid-cols-2   xl:grid-cols-3 2xl:grid-cols-4">
+        <section className="min-w-full   min-h-full ">
 
 
-            {finalAthletes.map((athlete, index) => (
-                <AthleteItem key={"athlete" + index} athlete={athlete} />
-            ))}
+            <div className="grid grid-cols-2   xl:grid-cols-3 2xl:grid-cols-4">
+                {finalAthletes.map((athlete, index) => (
+                    <AthleteItem key={"athlete" + index} athlete={athlete} />
+                ))}
+            </div>
         </section>
     );
 }

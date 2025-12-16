@@ -29,10 +29,13 @@ const VenueNew = () => {
             const newVenue: IVenue = {
                 name: nameInput.current.value,
                 capacity: Number(capacityInput.current.value),
-                image: image.name
+                image: image.name || ""
             };
 
+            console.log(newVenue, image)
+
             await saveVenue(newVenue, image);
+            console.log(newVenue)
 
             // Reset form
             nameInput.current.value = "";
