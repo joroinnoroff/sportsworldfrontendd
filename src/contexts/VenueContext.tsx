@@ -94,9 +94,9 @@ export const VenueProvider = ({ children }: Props) => {
     const saveVenue = async (newVenue: IVenue, image: File): Promise<IDefaultResponse> => {
         const response = await VenueService.postVenue(newVenue, image);
         if (response.success === true && response.data != null) {
-            const newAthleteWithId: IVenue = response.data;
+            const newVenueWithId: IVenue = response.data;
             setVenues(
-                prev => [...prev, newAthleteWithId]
+                prev => [...prev, newVenueWithId]
             );
         }
         return response;

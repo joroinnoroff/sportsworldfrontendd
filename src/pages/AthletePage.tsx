@@ -17,17 +17,17 @@ const AthletePage = () => {
         <>
             <div className="px-6  my-12">
 
-                <div className="">
-                    <h1 className="text-5xl font-bold my-4">Search for fighters</h1>
 
-                    <AthleteSearch />
-                    <hr className="my-12 text-gray-300" />
-                    <p className="font-thin opacity-70 mt-4">Your balance: {finance?.moneyLeft}kr</p>
-                    <AthleteList />
+                <h1 className="text-5xl font-bold my-4">Search for fighters</h1>
 
-                    <hr className="my-12 text-gray-300" />
-                    <AthleteEdit />
-                </div>
+                <AthleteSearch />
+                <hr className="my-12 text-gray-300" />
+                <p className="font-thin opacity-70 mt-4">Your balance: {finance?.moneyLeft}kr</p>
+                <AthleteList />
+
+                <hr className="my-12 text-gray-300" />
+                <AthleteEdit />
+
             </div>
         </>
     );

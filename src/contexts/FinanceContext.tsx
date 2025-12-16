@@ -9,7 +9,7 @@ export const FinanceProvider = ({ children }: Props) => {
     const [finance, setFinance] = useState<IFinance | null>(null
     );
 
-    //getFinance 
+    //getFinance  med bruk av service - egen tabell i db 
     const fetchFinance = async () => {
         const response = await FinanceService.getFinance();
         if (response.success && response.data) {
@@ -19,7 +19,7 @@ export const FinanceProvider = ({ children }: Props) => {
         return null;
     };
 
-
+    //henter finance ved start 
     useEffect(() => {
         const loadFinance = async () => {
             console.log("Fetching finance...");
@@ -29,6 +29,8 @@ export const FinanceProvider = ({ children }: Props) => {
         loadFinance();
     }, []);
 
+    //oppdaterer finance med bruk av interface som matcher felter i db med en PUT i service
+    // da vi sender med status false eller true i frontend så kan denne gjenbrukes til både kjøp og salg av athlete
     const updateFinance = async (updateFinance: IFinance) => {
         const response = await FinanceService.updateFinance(updateFinance)
         if (response.success && response.data) {

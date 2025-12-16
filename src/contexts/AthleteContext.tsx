@@ -12,8 +12,8 @@ export const AthleteProvider = ({ children }: Props) => {
 
     const [athletes, setAthletes] = useState<IAthlete[]>([]);
     const [idAthlete, setIdAthlete] = useState<IAthlete | null>(null);
-    const [nameAthletes, setNameAthletes] = useState<IAthlete[]>([]);
-    const [error, setError] = useState<Error | string>("");
+
+
 
     const setAthletesFromService = async () => {
         const response = await AthleteService.getAllAthletes();
@@ -55,59 +55,62 @@ export const AthleteProvider = ({ children }: Props) => {
     const fetchAthleteByName = async (name: string) => {
         const response = await AthleteService.getAthleteByName(name);
         if (response.success && response.data) {
-            setNameAthletes(response.data);
+            //BRUKER IKKE SETNAMES MEN heller vanlig som igjennom applikasjon setAthletes 
+            setAthletes(response.data);
         } else {
             console.log(Error)
         }
     }
 
-    // TODO: Put/edit athlete
-const putAthlete = async (editedAthlete: IAthlete, image: File | null): Promise<IDefaultResponse> => {
-    try {
-        // Always PUT the athlete object first
-        const response = await AthleteService.putAthlete(editedAthlete, image);
+    // Put/edit athlete
+    const putAthlete = async (editedAthlete: IAthlete, image: File | null): Promise<IDefaultResponse> => {
+        try {
+            // Setter athlete med service mot db
+            const response = await AthleteService.putAthlete(editedAthlete, image);
 
-        if (response.success && response.data) {
-            // Update local athlete list
-            setAthletes(prev =>
-                prev.map(a =>
-                    a.id === editedAthlete.id ? response.data : a
-                )
-            );
+            if (response.success && response.data) {
+                // oppdaterer  athlete list
+                setAthletes(prev =>
+                    prev.map(a =>
+                        a.id === editedAthlete.id ? response.data : a
+                    )
+                );
+            }
+
+            return response;
+
+        } catch (error) {
+            return { success: false, };
         }
+    };
 
-        return response;
 
-    } catch (error) {
-        return { success: false,};
-    }
-};
+    //sender med athlete purchased mot id til service og bruker put methoden for å endre objektets kjøp status
+    const putPurchasedTrue = async (purchasedAthlete: IAthlete): Promise<IDefaultResponse> => {
+        try {
+            const response = await AthleteService.putAthlete(purchasedAthlete, null);
 
-const putPurchasedTrue = async (purchasedAthlete: IAthlete): Promise<IDefaultResponse> => {
-    try {
-        const response = await AthleteService.putAthlete(purchasedAthlete, null);
-
-        if (response.success && response.data) {
-            // Update local athlete list
-            setAthletes(prev =>
-                prev.map(a =>
-                    a.id === purchasedAthlete.id ? response.data : a
-                )
-            );
+            if (response.success && response.data) {
+                // oppdaterer athlete list kjøpstatus
+                setAthletes(prev =>
+                    prev.map(a =>
+                        a.id === purchasedAthlete.id ? response.data : a
+                    )
+                );
+            }
+            return response;
+        } catch (error) {
+            return { success: false };
         }
-        return response;
-    } catch (error) {
-        return { success: false };  
     }
-}
 
 
     //delete athelete
-    const deleteAthelete = async (id: number) : Promise<IDefaultResponse> => {
+    const deleteAthelete = async (id: number): Promise<IDefaultResponse> => {
         const response = await AthleteService.deleteAthlete(id);
         if (response.success) {
             //oppdatere listen om sletting var vellykket
-            setAthletes(prev => prev.filter (a => a.id !== id));
+            setAthletes(prev => prev.filter(a => a.id !== id));
         }
         return response;
     };
@@ -133,13 +136,12 @@ const putPurchasedTrue = async (purchasedAthlete: IAthlete): Promise<IDefaultRes
             fetchAthleteById,
             idAthlete,
             fetchAthleteByName,
-            nameAthletes,
+
             saveAthlete,
             putAthlete,
             deleteAthelete,
-            
             putPurchasedTrue
-           
+
         }}>
             {children}
         </AthleteContext.Provider>
