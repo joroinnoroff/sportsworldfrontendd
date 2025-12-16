@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+
 import AthleteList from "../components/Athlete/AthleteList";
 import { useContext } from "react";
-import { FinanceContext } from "../contexts/FinanceContext";
+
 import Numbers from "../components/finance/Numbers";
 import { AthleteContext } from "../contexts/AthleteContext";
-import type { IAthleteContext } from "../interfaces/IAthleteContext";
+
 
 const DashboardPage = () => {
     const athleteContext = useContext(AthleteContext);

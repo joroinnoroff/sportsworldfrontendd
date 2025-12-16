@@ -10,8 +10,7 @@ const NewAthlete = () => {
     const priceInput = useRef<HTMLInputElement | null>(null);
     const imageInput = useRef<HTMLInputElement | null>(null);
     const [image, setImage] = useState<File | null>(null);
-    // purchaseStatus skal være false som default
-    // const purchaseStatus = useRef<HTMLInputElement>(false);
+
 
     const { saveAthlete } = useContext(AthleteContext) as IAthleteContext;
 

@@ -6,7 +6,7 @@ export interface IAthleteContext {
     fetchAthleteQuantity: () => number,
     fetchAthleteById: (id: number) => Promise<IAthleteSingelResponse>,
     idAthlete: IAthlete | null,
-    fetchAthleteByName: (name: string) => void,
+
 
     saveAthlete: (athlete: IAthlete, image: File) => Promise<IDefaultResponse>,
     putAthlete: (updatedAthlete: IAthlete, image: File) => Promise<IDefaultResponse>,

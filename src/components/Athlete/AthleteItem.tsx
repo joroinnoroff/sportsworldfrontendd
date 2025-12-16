@@ -39,18 +39,17 @@ const AthleteItem = ({ athlete }: { athlete: IAthlete }) => {
         };
 
         await putPurchasedTrue(updatedAthlete);
-        //scroll til toppen så man vet det er utført 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+
     };
 
-    //extra funksjon - selge tilbake figher - setter boolean false og får penger tilbake
+    //extra funksjon - selge tilbake figther - setter boolean false og får penger tilbake
     const handleSellFighter = async () => {
         if (!finance || athlete.id == null) return; // om ingen finance eller athlete id vil den ikke kjøre
         const newFinance = {
             ...finance,
             moneyLeft: finance.moneyLeft + athlete.price,
             numberOfPurchases: finance.numberOfPurchases + 0, // gjør ingenting med antall kjøp
-            moneySpent: finance.moneySpent - athlete.price
+            moneySpent: finance.moneySpent - athlete.price //trekker tilbake penger brukt mot athlete price
         };
 
         await updateFinance(newFinance);
@@ -71,7 +70,7 @@ const AthleteItem = ({ athlete }: { athlete: IAthlete }) => {
 
     return (
         <div className="p-4 my-12 max-w-sm ">
-            {/* HEADER */}
+            {/* HEADER på card*/}
             <div className="flex items-center justify-between mb-2">
                 <h2 className="text-lg font-medium">{athlete.name}</h2>
 
@@ -87,12 +86,12 @@ const AthleteItem = ({ athlete }: { athlete: IAthlete }) => {
 
             {/* DETAILS */}
             <div className="text-sm mb-3">
-                <p>ID: {athlete.id}</p>
-                <p>Gender: {athlete.gender}</p>
+                <p className="font-thin">ID: {athlete.id}</p>
+                <p className="font-thin">Gender: {athlete.gender}</p>
                 <p>Price: {athlete.price} kr</p>
             </div>
 
-            {/* IMAGE — SAME SIZE FOR ALL */}
+
             <div className="relative h-[400px] lg:h-[500px]">
                 <img
                     className="w-full h-full object-contain"
@@ -104,7 +103,7 @@ const AthleteItem = ({ athlete }: { athlete: IAthlete }) => {
             {/* ACTIONS */}
             <div className="mt-4 flex flex-col gap-2">
 
-                {/**Vises om kjøpstatus er false */}
+                {/**Vises kun om kjøpstatus er false */}
                 {athlete.purchaseStatus ? (
                     null
                 ) : <>

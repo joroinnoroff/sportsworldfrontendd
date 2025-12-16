@@ -200,12 +200,12 @@ const AthleteEdit = () => {
                         />
                     </div>
                 </div>
-            </div>
 
-            <button onClick={editAthlete} className="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition font-medium">
-                Edit
-            </button>
-            <p>{statusMessage}</p>
+                <button onClick={editAthlete} className="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition font-medium">
+                    Edit
+                </button>
+                <p>{statusMessage}</p>
+            </div>
         </section>
     );
 };

@@ -37,21 +37,7 @@ const getAthleteById = async (id: number): Promise<IAthleteSingelResponse> => {
     }
 }
 
-// GET BY NAME
-const getAthleteByName = async (name: string): Promise<IAthleteResponse> => {
-    try {
-        const response = await axios.get(`${endpoint}/GetByName/${name}`);
-        return {
-            success: true,
-            data: response.data
-        }
-    } catch (error) {
-        return {
-            success: false,
-            data: null
-        }
-    }
-}
+//Har kun get by name i venue da vi bruker kun athletes allerede i state i search komponenten
 
 // PUT ATHLETE (med bilde)
 const putAthlete = async (editedAthlete: IAthlete, newImage: File | null) => {
@@ -150,7 +136,6 @@ const purchaseAthlete = async (athelete: IAthlete): Promise<IAthleteSingelRespon
 export default {
     getAllAthletes,
     getAthleteById,
-    getAthleteByName,
     putAthlete,
     postAthlete,
     deleteAthlete,

@@ -9,12 +9,13 @@ export const AthleteContext = createContext<IAthleteContext | null>(null);
 interface Props { children: ReactNode }
 
 export const AthleteProvider = ({ children }: Props) => {
-
+    //state for alle athletes / fightere
     const [athletes, setAthletes] = useState<IAthlete[]>([]);
+    //state for enkelt athlete  
     const [idAthlete, setIdAthlete] = useState<IAthlete | null>(null);
 
 
-
+    //henter alle athletes fra API
     const setAthletesFromService = async () => {
         const response = await AthleteService.getAllAthletes();
         if (response.success && response.data) {
@@ -23,7 +24,7 @@ export const AthleteProvider = ({ children }: Props) => {
             console.log(Error)
         }
     }
-
+    //kjører når nettsiden mounter
     useEffect(() => {
         setAthletesFromService();
     }, [])
@@ -51,16 +52,8 @@ export const AthleteProvider = ({ children }: Props) => {
         }
     }
 
-    // Søk athlete på name 
-    const fetchAthleteByName = async (name: string) => {
-        const response = await AthleteService.getAthleteByName(name);
-        if (response.success && response.data) {
-            //BRUKER IKKE SETNAMES MEN heller vanlig som igjennom applikasjon setAthletes 
-            setAthletes(response.data);
-        } else {
-            console.log(Error)
-        }
-    }
+    // Søk athlete på name brukes kun state, vi gjør ingen kall mot db - i Venue brukes getByName
+
 
     // Put/edit athlete
     const putAthlete = async (editedAthlete: IAthlete, image: File | null): Promise<IDefaultResponse> => {
@@ -69,7 +62,7 @@ export const AthleteProvider = ({ children }: Props) => {
             const response = await AthleteService.putAthlete(editedAthlete, image);
 
             if (response.success && response.data) {
-                // oppdaterer  athlete list
+                // oppdaterer  athlete i state
                 setAthletes(prev =>
                     prev.map(a =>
                         a.id === editedAthlete.id ? response.data : a
@@ -85,13 +78,13 @@ export const AthleteProvider = ({ children }: Props) => {
     };
 
 
-    //sender med athlete purchased mot id til service og bruker put methoden for å endre objektets kjøp status
+    //sender med athlete purchased true/false mot id til service og bruker put methoden for å endre objektets kjøp status
     const putPurchasedTrue = async (purchasedAthlete: IAthlete): Promise<IDefaultResponse> => {
         try {
             const response = await AthleteService.putAthlete(purchasedAthlete, null);
 
             if (response.success && response.data) {
-                // oppdaterer athlete list kjøpstatus
+                // oppdaterer athlete  kjøpstatus i state
                 setAthletes(prev =>
                     prev.map(a =>
                         a.id === purchasedAthlete.id ? response.data : a
@@ -109,7 +102,7 @@ export const AthleteProvider = ({ children }: Props) => {
     const deleteAthelete = async (id: number): Promise<IDefaultResponse> => {
         const response = await AthleteService.deleteAthlete(id);
         if (response.success) {
-            //oppdatere listen om sletting var vellykket
+            //oppdatere state om sletting var vellykket
             setAthletes(prev => prev.filter(a => a.id !== id));
         }
         return response;
@@ -135,7 +128,7 @@ export const AthleteProvider = ({ children }: Props) => {
             fetchAthleteQuantity,
             fetchAthleteById,
             idAthlete,
-            fetchAthleteByName,
+
 
             saveAthlete,
             putAthlete,

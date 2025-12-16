@@ -9,30 +9,34 @@ const AthleteSearch = () => {
 
     const nameInput = useRef<HTMLInputElement | null>(null);
     //importere athletes fra context
-    const { athletes, fetchAthleteByName } = useContext(AthleteContext) as IAthleteContext;
+    const { athletes } = useContext(AthleteContext) as IAthleteContext;
     const [searched, setSearched] = useState<string>("");
 
 
-    //bruker athletes fra context og setter dem
-
+    //bruker athletes fra context og setter dem istedenfor å bruke db funksjon 
     const handleSearch = () => {
-        if (!nameInput.current?.value) return;
-
-        const value = nameInput.current.value;
-        setSearched(value);
-        fetchAthleteByName(value);
-
-        nameInput.current.value = "";
+        if (nameInput.current?.value) {
+            setSearched(nameInput.current.value);
+        }
     };
 
+
+
+
+
+    //Trenger ikke være async bare for ui
     const handleClear = () => {
-        setSearched("");
-    };
-
-
-
-
-
+        setSearched("")
+        //nullstiller søkefelt 
+        if (nameInput.current) nameInput.current.value = "";
+    }
+    //bruker det som alt er i contekst og søker etter dem istedenfor å bruke fetchbyname som vi gjør i venueSearch 
+    //om ingenting er søkt er det et tomt array - athletes fra context med filter navn  
+    const displayedAthletes = searched
+        ? athletes.filter(a =>
+            a.name.toLowerCase().includes(searched.toLowerCase())
+        )
+        : [];
 
 
 
@@ -64,29 +68,13 @@ const AthleteSearch = () => {
             {/**Vises kun om man søker */}
             {searched && (
                 <div className="mt-4 space-y-3">
-                    <p>You have searched for: {searched}</p>
+                    <p>You have searched for: {searched} </p>
 
-                    <button
-                        onClick={handleClear}
-                        className="px-4 py-2 flex gap-1 cursor-pointer rounded-md"
-                    >
-                        <span className="text-xs rounded-full bg-black text-white h-4 w-4 flex items-center justify-center">
-                            X
-                        </span>
-                        Clear
-                    </button>
-
-                    <p className="text-xs opacity-60">
-                        {athletes.length}{" "}
-                        {athletes.length === 1 ? "result" : "results"}
-                    </p>
-                    {/**Har BRUKT athtles og ikke nameAhtletes da det blir en annen liste en den vi bruker igjennom applikasjon  */}
-                    <div className="grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 ">
-                        {athletes.map((athlete, index) => (
-                            <AthleteItem
-                                key={`athlete-${athlete.id ?? index}`}
-                                athlete={athlete}
-                            />
+                    <button onClick={handleClear} className="px-4 py-2 flex gap-1 cursor-pointer rounded-md"><span className="text-xs rounded-full bg-black text-white h-4 w-4">X</span>Clear</button>
+                    <p className="text-xs font-thin opacity-60 my-2">{displayedAthletes.length} {displayedAthletes.length > 1 ? "results" : "result"}</p>
+                    <div className="grid grid-cols-2   xl:grid-cols-3 2xl:grid-cols-4">
+                        {displayedAthletes.map((athlete, index) => (
+                            <AthleteItem key={"athlete" + index} athlete={athlete} />
                         ))}
                     </div>
                 </div>
